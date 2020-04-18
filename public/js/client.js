@@ -14,7 +14,7 @@ const $locationMessageTemplate = document.querySelector('#location-message-templ
 const $sidebarTemplate = document.querySelector('#sidebar-template').innerHTML
 
 // Options
-const {username, room} = Qs.parse(location.search, {ignoreQueryPrefix: true})
+const {username, room, password} = Qs.parse(location.search, {ignoreQueryPrefix: true})
 
 const autoscroll = () => {
     // Get new message element
@@ -104,7 +104,7 @@ $sendLocationButton.addEventListener('click', () => {
     })
 })
 
-socket.emit('join', {username,room}, (error) => {
+socket.emit('join', {username,room,password}, (error) => {
     if(error){
         alert(error)
         location.href = '/'
