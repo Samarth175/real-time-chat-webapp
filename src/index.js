@@ -9,7 +9,7 @@ const Filter = require('bad-words')
 
 //external files
 const {generateMessage, generateLocationMessage} = require('./utils/messages')
-const {addUser, removeUser, getUser, getUsersInRoom} = require('./utils/users')
+const {addUser, removeUser, getUser, getUsersInRoom, getAllRooms} = require('./utils/users')
 
 const app = express()
 const server = http.createServer(app)
@@ -20,10 +20,15 @@ const publicDirPath = path.join(__dirname,'../public')
 
 app.use(express.static(publicDirPath))
 
-let count = 0
+// let count = 0
 
 io.on('connection', (socket) => {
     console.log("Web Socket connection established")
+
+    socket.on('getRooms',(callback) => {
+        const rooms = getAllRooms()
+        callback(rooms)
+    })
 
     socket.on('join', (options,callback) => {
         const {error,user} = addUser({id: socket.id, ...options})

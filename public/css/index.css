@@ -1,0 +1,135 @@
+/* General Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+input {
+    font-size: 14px;
+}
+
+body {
+    line-height: 1.4;
+    color: #333333;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #777;
+}
+
+input {
+    border: 1px solid #eeeeee;
+    padding: 12px;
+    outline: none;
+}
+
+button {
+    cursor: pointer;
+    padding: 12px;
+    background: #7C5CBF;
+    border: none;
+    color: white;
+    font-size: 16px;
+    transition: background .3s ease;
+}
+
+button:hover {
+    background: #6b47b8;
+}
+
+button:disabled {
+    cursor: default;
+    background: #7c5cbf94;
+}
+
+/* Join Page Styles */
+
+.centered-form {
+    background: #333744;
+    width: 100vw;
+    height: 100vh;   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.centered-form__box {
+    box-shadow: 0px 0px 17px 1px #1D1F26;
+    background: #F7F7FA;
+    padding: 24px;
+    width: 350px;
+    height: 450px;
+    margin: 0 auto;
+}
+
+.centered-form button {
+    width: 100%;
+}
+
+.centered-form input {
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.rooms-list {
+    list-style-type: none;
+    font-weight: 300;
+    padding: 8px 8px 0 8px;                 /* top right bottom left */
+    background-color: #D3D3D3;
+    height: 322px;
+    overflow-y: auto;
+}
+
+.rooms-list::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.rooms-list::-webkit-scrollbar-track {
+    background: #1e1e24;
+    border-radius: 20px;
+}
+
+.rooms-list::-webkit-scrollbar-thumb {
+    background: #6649b8;
+    border-radius: 20px;
+}
+
+#rooms-list__error {
+    display: none;
+}
+
+.rooms-list li {
+    background-color: #FFFAF0;
+    margin-bottom: 8px;
+    padding: 2px;
+    border: 1px solid #808080;
+}
+
+.rooms-list li:hover {
+    cursor: pointer;
+    border: 2px solid blue;
+}
+
+.room__name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.room__count {
+    color: #777;
+    font-size: 14px;
+}

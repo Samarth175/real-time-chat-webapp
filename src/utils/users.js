@@ -100,6 +100,18 @@ const getRoom = (room) => {
     return rooms.find((roomObj) => roomObj.room === room)
 }
 
+const getAllRooms = () => {
+    const allRooms = []
+    rooms.forEach((roomObj) => {
+        const room = {
+            room: roomObj.room,
+            userCount: roomObj.userCount
+        }
+        allRooms.push(room)
+    })
+    return allRooms
+}
+
 const deleteRoom = (room) => {
     const index = rooms.findIndex((roomObj) => roomObj.room === room)
 
@@ -139,5 +151,6 @@ module.exports = {
     addUser,
     removeUser,
     getUser,
-    getUsersInRoom
+    getUsersInRoom,
+    getAllRooms
 }

@@ -6,7 +6,7 @@
     <title>Chat App</title>
 
     <link rel="icon" href="./img/favicon.png"/>
-    <link rel="stylesheet" href="./css/styles.min.css"/>
+    <link rel="stylesheet" href="./css/index.css"/>
 </head>
 <body>
     <div class="centered-form">
@@ -22,6 +22,34 @@
                 <button type="submit">Join</button>
             </form>
         </div>
+
+        <div class="centered-form__box">
+            <div id="liverooms-container">
+                
+            </div>
+        </div>
+        
     </div>
+    
+    <script id="liverooms-template" type="text/html">
+        <h1>Live Rooms</h1>
+        <ul class="rooms-list">
+            {{#rooms}}
+                <li onclick="selectRoom(this)">
+                    <p class="room__name">{{room}}</p>
+                    <p class="room__count">{{userCount}} member</p>
+                </li>
+            {{/rooms}}
+
+            <!-- In case there is no live room -->
+            <li id="rooms-list__error">
+                <p class="room__name">{{error}}</p>
+            </li>
+        </ul>
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>
