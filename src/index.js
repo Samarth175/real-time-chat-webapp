@@ -20,8 +20,6 @@ const publicDirPath = path.join(__dirname,'../public')
 
 app.use(express.static(publicDirPath))
 
-// let count = 0
-
 io.on('connection', (socket) => {
     console.log("Web Socket connection established")
 
@@ -31,21 +29,20 @@ io.on('connection', (socket) => {
     })
 
     socket.on('join', (options,callback) => {
-        const {error,user} = addUser({id: socket.id, ...options})
+        addUser({id: socket.id, ...options}).then((user) => {
+            socket.join(user.room)
 
-        if(error){
-            return callback(error)
-        }
+            socket.emit('message', generateMessage("Admin",'Welcome !'))
+            socket.broadcast.to(user.room).emit('message', generateMessage("Admin",`${user.username} has joined!`))
+            io.to(user.room).emit('roomData', {
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            })
+            callback()
 
-        socket.join(user.room)
-
-        socket.emit('message', generateMessage("Admin",'Welcome !'))
-        socket.broadcast.to(user.room).emit('message', generateMessage("Admin",`${user.username} has joined!`))
-        io.to(user.room).emit('roomData', {
-            room: user.room,
-            users: getUsersInRoom(user.room)
+        }).catch((error) => {
+            callback(error.message)
         })
-        callback()
     })
 
     socket.on('messageSent', (message,callback) => {

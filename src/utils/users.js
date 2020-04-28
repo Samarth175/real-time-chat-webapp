@@ -1,7 +1,9 @@
+const bcrypt = require('bcrypt')
+
 const users = []
 const rooms = []
 
-const addUser = ({id,username,room,password}) => {
+const addUser = async ({id,username,room,password}) => {
     // Clean the data
     username = username.trim().toLowerCase()
     room = room.trim().toLowerCase()
@@ -9,25 +11,35 @@ const addUser = ({id,username,room,password}) => {
     
     // Validate the data
     if(!username || !room){
-        return {
-            error: "Username and Room are required!"
-        }
+        throw new Error('Username and Room are required!')
     }
 
     //Add room if it doesn't exist
+    let roomObj = {}
     if(!roomExist(room)){
-        const {error,roomObj} = addRoom({room,password})
-        if(error){
-            return {error}
+        try{
+            roomObj = await addRoom({room,password})
+
+            // @issue --> if room created successfully but next step like authentication etc fails
+            //            the room with 0 member is left. But room should get deleted in such case.
+        } catch(error){
+            throw error
         }
+    }else {
+        roomObj = getRoom(room)
     }
-
-    // Authenticate Password
-    const roomObj = getRoom(room)
-
-    if(roomObj.password !== password){
-        return {
-            error: "Invalid password or Room already in use!"
+    
+    // Authenticate Password if room has a password
+    if(roomObj.password){
+        let isMatch = false
+        try{
+            isMatch = await bcrypt.compare(password,roomObj.password)
+        } catch(error){
+            console.log("Error: Unable to compare hash password : ",error)      //for debugging
+            throw new Error('Server Error, Please try again!')
+        }
+        if(!isMatch){
+            throw new Error('Invalid password or Room already in use!')
         }
     }
 
@@ -38,9 +50,7 @@ const addUser = ({id,username,room,password}) => {
 
     // Validate existing user
     if(existingUser){
-        return {
-            error: "Username is in use!"
-        }
+        throw new Error('Username is in use!')
     }
 
     // Add the user
@@ -49,8 +59,8 @@ const addUser = ({id,username,room,password}) => {
 
     // Increase userCount in room
     increaseUserCount(room)
-
-    return {user}
+    
+    return user
 }
 
 const removeUser = (id) => {
@@ -72,28 +82,34 @@ const getUsersInRoom = (room) => {
     return users.filter((user) => user.room === room)
 }
 
-const addRoom = ({room,password}) =>{
+const addRoom = async ({room,password}) =>{
     room = room.trim().toLowerCase()
     password = password.trim()
 
     //Validate data
     if(!room){
-        return {
-            error: "Room is required!"
-        }
+        throw new Error('Room is required!')
     }
 
     //Check existing room
     if(roomExist(room)){
-        return {
-            error: "Room already in use!"
+        throw new Error('Room already in use!')
+    }
+
+    // Hash the password if it is not empty
+    if(password){
+        try{
+            password = await bcrypt.hash(password,10)
+        }catch(error){
+            console.log("Error: Unable to hash password : ",error)      //for debugging
+            throw new Error('Server Error, Please try again!')
         }
     }
 
     //Add the Room
     const roomObj = {room,userCount: 0,password}
     rooms.push(roomObj)
-    return {roomObj}
+    return roomObj
 }
 
 const getRoom = (room) => {
