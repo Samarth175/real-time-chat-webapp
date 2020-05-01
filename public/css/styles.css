@@ -135,6 +135,16 @@ button:disabled {
 
 /* Chat Sidebar Styles */
 
+.sidebar-toggle{
+    display: none;
+    width: 100%;
+}
+
+.sidebar-toggle__icon{
+    display: block;
+    margin: 0 auto;
+}
+
 .room-title {
     font-weight: 400;
     font-size: 22px;
@@ -153,4 +163,41 @@ button:disabled {
     list-style-type: none;
     font-weight: 300;
     padding: 12px 24px 0 24px;
+}
+
+/* unexpanded sidebar for small screens */
+@media only screen and (max-width: 715px){
+    .chat__sidebar{
+        width: 50px;
+        overflow: hidden;
+        transition: width 400ms ease;
+    }
+
+    .chat__sidebar .sidebar-toggle{
+        display: block;
+    }
+
+    .chat__sidebar .sidebar-toggle__icon{
+        transform: rotate(0deg);
+        transition: 600ms;
+    }
+
+    .chat__sidebar .sidebar-menu{
+        display: none;
+    }
+}
+
+/* expanded sidebar for small screens */
+@media only screen and (max-width: 715px){
+    .chat__sidebar.responsive{
+        width: 225px;
+    }
+    .chat__sidebar.responsive .sidebar-toggle__icon{
+        margin-right: 10px;
+        transform: rotate(-180deg);
+    }
+
+    .chat__sidebar.responsive .sidebar-menu{
+        display: block;
+    }
 }

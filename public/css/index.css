@@ -63,6 +63,7 @@ button:disabled {
     width: 100vw;
     height: 100vh;   
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 }
@@ -132,4 +133,14 @@ button:disabled {
 .room__count {
     color: #777;
     font-size: 14px;
+}
+
+@media only screen and (max-width: 715px){
+    .centered-form{
+        height: 100%;
+    }
+    
+    .centered-form__box{
+        margin: 20px auto;
+    }
 }

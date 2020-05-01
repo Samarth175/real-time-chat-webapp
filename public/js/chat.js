@@ -38,6 +38,15 @@ const autoscroll = () => {
     }
 }
 
+const expandSidebar = () => {
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar.className === "chat__sidebar") {
+        sidebar.className += " responsive";
+    } else {
+        sidebar.className = "chat__sidebar";
+    }
+}
+
 socket.on('message', (message) => {
     const html = Mustache.render($messageTemplate,{
         username: message.username,
